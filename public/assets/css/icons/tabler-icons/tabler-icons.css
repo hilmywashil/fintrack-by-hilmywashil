@@ -3414,6 +3414,10 @@
   content: "\ef5a";
 }
 
+.ti-info-alt:before {
+  content: "\eb61";
+}
+
 .ti-cheese:before {
   content: "\ef26";
 }

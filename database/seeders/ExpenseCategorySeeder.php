@@ -14,15 +14,15 @@ class ExpenseCategorySeeder extends Seeder
     public function run(): void
     {
         $items = [
-            'makan_minum',
-            'transportasi',
-            'belanja_kebutuhan',
-            'gaya_hidup',
-            'hiburan',
-            'tagihan',
-            'transfer',
-            'donasi',
-            'lainnya'
+            'food_and_drinks',      // makan_minum
+            'transportation',       // transportasi
+            'shopping',             // belanja_kebutuhan
+            'lifestyle',            // gaya_hidup
+            'entertainment',        // hiburan
+            'bills',                // tagihan
+            'transfers',            // transfer
+            'donation',             // donasi
+            'others'                // lainnya
         ];
 
         foreach ($items as $item) {

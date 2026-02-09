@@ -14,12 +14,12 @@ class IncomeCategorySeeder extends Seeder
     public function run(): void
     {
         $items = [
-            'gaji',
-            'freelance',
-            'bisnis',
-            'hadiah',
-            'refund',
-            'lainnya'
+            'salary',        // gaji
+            'freelance',     // freelance
+            'business',      // bisnis
+            'gift',          // hadiah
+            'refund',        // refund
+            'others'         // lainnya
         ];
 
         foreach ($items as $item) {

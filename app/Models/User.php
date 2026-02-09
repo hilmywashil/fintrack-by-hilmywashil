@@ -19,9 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'balance',
         'email',
         'password',
-        'role',
+        'role'
     ];
 
     public function posts()
@@ -61,4 +62,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
 }

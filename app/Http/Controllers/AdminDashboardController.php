@@ -7,9 +7,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class AdminDashboardController extends Controller
 {
-
     public function index()
     {
         $userId = auth()->id();
@@ -36,7 +35,6 @@ class DashboardController extends Controller
             $key = $date->format('Y-m-d');
 
             $days[] = $date->format('d M');
-
             $income[] = $transactions[$key]->total_income ?? 0;
             $expense[] = $transactions[$key]->total_expense ?? 0;
         }
@@ -71,14 +69,20 @@ class DashboardController extends Controller
             ? $totalIncome / $incomeMonthsCount
             : 0;
 
-        return view('dashboard.index', compact('days', 'income', 'expense', 'totalExpense', 'averageMonthlyExpense', 'totalIncome', 'averageMonthlyIncome'));
+        return view('admin.dashboard.index', compact(
+            'days',
+            'income',
+            'expense',
+            'totalExpense',
+            'averageMonthlyExpense',
+            'totalIncome',
+            'averageMonthlyIncome'
+        ));
     }
 
-    // API JS Chart Data
     public function chartData(Request $request)
     {
         $userId = auth()->id();
-
         $period = $request->period;
 
         if ($period == 'month') {
@@ -119,5 +123,4 @@ class DashboardController extends Controller
             'expense' => $expense
         ]);
     }
-
 }

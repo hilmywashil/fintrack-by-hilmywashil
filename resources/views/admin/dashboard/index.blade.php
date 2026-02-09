@@ -9,8 +9,8 @@
                 <!-- Sambutan & Balance -->
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                     <div class="mb-3 mb-md-0">
-                        <h4 class="fw-bold text-white">Hello, {{ auth()->user()->name }}</h4>
-                        <p class="mb-0">Welcome back! Manage your finances effectively.</p>
+                        <h4 class="fw-bold text-white">Hello Admin {{ explode(' ', auth()->user()->name)[0] }} !</h4>
+                        <p class="mb-0">Welcome back! Manage your Website here.</p>
                     </div>
                     <div class="text-md-end">
                         <h3 class="fw-bold mb-1 text-white">
@@ -19,7 +19,6 @@
                         <small class="d-block">IDR</small>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
