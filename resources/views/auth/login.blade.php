@@ -5,7 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login - FinTrack</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/favicon.png') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href=" apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
     <link rel="stylesheet" href="{{ asset('assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
@@ -84,7 +87,7 @@
 
                     <div class="modal-header text-white p-0">
                         <div class="w-100 bg-danger p-3 rounded-top text-center">
-                            <h5 class="modal-title text-white">Account Suspended</h5>
+                            <h5 class="modal-title text-white">Akun Di-Suspend</h5>
                         </div>
 
                     </div>
@@ -93,12 +96,12 @@
                         <i class="ti ti-alert-triangle text-danger" style="font-size: 50px;"></i>
 
                         <p class="mt-3">
-                            Sorry <strong>{{ session('name') }}</strong>,
-                            your account has been <strong>suspended</strong>.
+                            <strong>{{ session('name') }}</strong>,
+                            akun Anda telah di suspend karena adanya aktifitas tidak wajar atau pelanggaran ketentuan.
                         </p>
 
                         <p>
-                            Please contact administrator for more information.
+                            Hubungi Administrator untuk informasi lebih lanjut.
                         </p>
                     </div>
 

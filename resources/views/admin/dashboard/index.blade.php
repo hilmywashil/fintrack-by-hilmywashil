@@ -14,7 +14,7 @@
                     </div>
                     <div class="text-md-end">
                         <h3 class="fw-bold mb-1 text-white">
-                            Rp {{ number_format(auth()->user()->balance ?? 0, 2, ',', '.') }}
+                            Rp {{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}
                         </h3>
                         <small class="d-block">IDR</small>
                     </div>
@@ -34,7 +34,7 @@
                             <div class="row align-items-center">
                                 <div class="col-12">
                                     <h4 class="fw-semibold mb-3">Rp
-                                        {{ number_format($averageMonthlyIncome, 2, ',', '.') }} IDR
+                                        {{ number_format($averageMonthlyIncome, 0, ',', '.') }} IDR
                                     </h4>
                                     <div class="d-flex align-items-center mb-3">
                                         <span
@@ -56,7 +56,7 @@
                                 <div class="col-8">
                                     <h5 class="card-title mb-9 fw-semibold">Average Monthly Expense</h5>
                                     <h4 class="fw-semibold mb-3">
-                                        Rp {{ number_format($averageMonthlyExpense, 2, ',', '.') }} IDR
+                                        Rp {{ number_format($averageMonthlyExpense, 0, ',', '.') }} IDR
                                     </h4>
                                     <div class="d-flex align-items-center pb-1">
                                         <span

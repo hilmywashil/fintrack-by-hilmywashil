@@ -71,10 +71,15 @@
                             <thead class="text-dark fs-4">
                                 <tr>
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Number</h6>
+                                        <h6 class="fw-semibold mb-0">No</h6>
                                     </th>
+
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Name</h6>
+                                        <h6 class="fw-semibold mb-0">Foto</h6>
+                                    </th>
+
+                                    <th>
+                                        <h6 class="fw-semibold mb-0">Nama</h6>
                                     </th>
                                     <th>
                                         <h6 class="fw-semibold mb-0">Email</h6>
@@ -96,68 +101,76 @@
 
                             <tbody>
                                 @forelse ($users as $user)
-                                    <tr>
-                                        <td>
-                                            <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
-                                        </td>
-                                        <td>
-                                            <h6 class="fw-semibold mb-1">{{ $user->name }}</h6>
-                                        </td>
-                                        <td>
-                                            <h6 class="fw-semibold mb-1">
-                                                {{ $user->email }}
-                                            </h6>
-                                        </td>
-                                        <td>
-                                            <span class="badge {{ $user->role == 'admin' ? 'bg-primary' : 'bg-secondary' }} ">
-                                                {{ ucfirst($user->role) }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            @if($user->is_suspended)
-                                                <span class="badge bg-danger ">Suspended</span>
-                                            @else
-                                                <span class="badge bg-success">Active</span>
-                                            @endif
-                                        </td>
+                                                        <tr>
+                                                            <td>
+                                                                <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
+                                                            </td>
 
-                                        <td>
-                                            <p class="mb-0 fw-normal" data-tippy-content="{{ $user->created_at ?? '-' }}">
-                                                {{ Str::limit($user->created_at ?? '-', 20) }}
-                                            </p>
-                                        </td>
-                                        <td class="d-flex gap-2">
-                                            @if(Auth::id() != $user->id)
+                                                            <td>
+                                                                <img src="{{ $user->photo
+                                    ? asset('storage/' . $user->photo)
+                                    : asset('assets/images/profile/user-1.png') }}" class="rounded-circle" width="40"
+                                                                    height="40" style="object-fit: cover;">
+                                                            </td>
 
-                                                <!-- Login As -->
-                                                <form method="POST" action="{{ route('admin.users.login-as', $user->id) }}">
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-sm btn-warning">
-                                                        Login as this user
-                                                    </button>
-                                                </form>
+                                                            <td>
+                                                                <h6 class="fw-semibold mb-1">{{ $user->name }}</h6>
+                                                            </td>
+                                                            <td>
+                                                                <h6 class="fw-semibold mb-1">
+                                                                    {{ $user->email }}
+                                                                </h6>
+                                                            </td>
+                                                            <td>
+                                                                <span class="badge {{ $user->role == 'admin' ? 'bg-primary' : 'bg-secondary' }} ">
+                                                                    {{ ucfirst($user->role) }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                @if($user->is_suspended)
+                                                                    <span class="badge bg-danger ">Suspended</span>
+                                                                @else
+                                                                    <span class="badge bg-success">Active</span>
+                                                                @endif
+                                                            </td>
 
-                                                <!-- Suspend / Unsuspend -->
-                                                <form method="POST" action="{{ route('admin.users.toggle-suspend', $user->id) }}">
-                                                    @csrf
-                                                    @method('PUT')
+                                                            <td>
+                                                                <p class="mb-0 fw-normal" data-tippy-content="{{ $user->created_at ?? '-' }}">
+                                                                    {{ Str::limit($user->created_at ?? '-', 20) }}
+                                                                </p>
+                                                            </td>
+                                                            <td class="d-flex gap-2">
+                                                                @if(Auth::id() != $user->id)
 
-                                                    @if($user->is_suspended)
-                                                        <button type="submit" class="btn btn-sm btn-success">
-                                                            Unsuspend
-                                                        </button>
-                                                    @else
-                                                        <button type="submit" class="btn btn-sm btn-danger">
-                                                            Suspend
-                                                        </button>
-                                                    @endif
-                                                </form>
+                                                                    <!-- Login As -->
+                                                                    <form method="POST" action="{{ route('admin.users.login-as', $user->id) }}">
+                                                                        @csrf
+                                                                        <button type="submit" class="btn btn-sm btn-warning">
+                                                                            Login as this user
+                                                                        </button>
+                                                                    </form>
 
-                                            @else
-                                                <span class="text-muted">Current User</span>
-                                            @endif
-                                        </td>
-                                    </tr>
+                                                                    <!-- Suspend / Unsuspend -->
+                                                                    <form method="POST" action="{{ route('admin.users.toggle-suspend', $user->id) }}">
+                                                                        @csrf
+                                                                        @method('PUT')
+
+                                                                        @if($user->is_suspended)
+                                                                            <button type="submit" class="btn btn-sm btn-success">
+                                                                                Unsuspend
+                                                                            </button>
+                                                                        @else
+                                                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                                                Suspend
+                                                                            </button>
+                                                                        @endif
+                                                                    </form>
+
+                                                                @else
+                                                                    <span class="text-muted">Current User</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
                                 @empty
                                     <tr>
                                         <td colspan="7" class="text-center">Tidak ada Data</td>

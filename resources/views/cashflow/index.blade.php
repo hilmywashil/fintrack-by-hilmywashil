@@ -12,7 +12,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Cashflow</li>
+                        <li class="breadcrumb-item active">Data Keuangan</li>
                     </ol>
                 </nav>
             </div>
@@ -22,31 +22,40 @@
                 <div class="card-body p-4">
 
                     <h5 class="card-title fw-semibold mb-4">
-                        Recent Cashflows
+                        Daftar Transaksi Terbaru
+
                         @if(request('type'))
-                            - {{ ucfirst(request('type')) }}
+                            - {{ request('type') == 'income' ? 'Pemasukan' : 'Pengeluaran' }}
+                        @endif
+
+                        @if(request('date'))
+                            - {{ \Carbon\Carbon::parse(request('date'))->translatedFormat('d F Y') }}
                         @endif
                     </h5>
 
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div
+                        class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
 
-                        <form method="GET" class="d-flex gap-2 align-items-center">
+                        <form method="GET"
+                            class="d-flex flex-column flex-md-row gap-2 align-items-stretch align-items-md-center w-100 w-md-auto">
 
                             <select name="type" class="form-select">
-                                <option value="">All Types</option>
+                                <option value="">Semua Tipe</option>
                                 <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>
-                                    Income
+                                    Pemasukan
                                 </option>
                                 <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>
-                                    Expense
+                                    Pengeluaran
                                 </option>
                             </select>
+
+                            <input type="date" name="date" class="form-control" value="{{ request('date') }}">
 
                             <button type="submit" class="btn btn-primary">
                                 Filter
                             </button>
 
-                            @if(request('type'))
+                            @if(request('type') || request('date'))
                                 <a href="{{ route('transactions.index') }}" class="btn btn-secondary">
                                     Reset
                                 </a>
@@ -55,25 +64,24 @@
                         </form>
 
                     </div>
-
                     <div class="table-responsive">
                         <table class="table text-nowrap mb-0 align-middle">
                             <thead class="text-dark fs-4">
                                 <tr>
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Number</h6>
+                                        <h6 class="fw-semibold mb-0">Tanggal</h6>
                                     </th>
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Type</h6>
+                                        <h6 class="fw-semibold mb-0">Tipe</h6>
                                     </th>
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Category</h6>
+                                        <h6 class="fw-semibold mb-0">Kategori</h6>
                                     </th>
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Amount</h6>
+                                        <h6 class="fw-semibold mb-0">Jumlah</h6>
                                     </th>
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Note</h6>
+                                        <h6 class="fw-semibold mb-0">Catatan</h6>
                                     </th>
                                 </tr>
                             </thead>
@@ -82,13 +90,15 @@
                                 @forelse ($transactions as $transaction)
                                     <tr>
                                         <td>
-                                            <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
+                                            <h6 class="fw-semibold mb-0">
+                                                {{ \Carbon\Carbon::parse($transaction->date)->translatedFormat('d F Y') }}
+                                            </h6>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center gap-2">
                                                 <span
                                                     class="badge {{ $transaction->type == 'income' ? 'bg-success' : 'bg-danger' }}">
-                                                    {{ ucfirst($transaction->type) }}
+                                                    {{ $transaction->type == 'income' ? 'Pemasukan' : 'Pengeluaran' }}
                                                 </span>
                                             </div>
                                         </td>
@@ -100,7 +110,7 @@
 
                                         <td>
                                             <h6 class="fw-semibold mb-0 fs-4">
-                                                Rp. {{ number_format($transaction->amount, 2) }}
+                                                Rp. {{ number_format($transaction->amount, 0, ',', '.') }}
                                             </h6>
                                         </td>
 
@@ -126,7 +136,7 @@
 
                                 <div class="text-muted small">
                                     Menampilkan {{ $transactions->firstItem() }} - {{ $transactions->lastItem() }}
-                                    dari {{ $transactions->total() }} transaksi
+                                    dari {{ $transactions->total() }} data
                                 </div>
 
                                 <nav>
@@ -164,13 +174,13 @@
                 <div class="card-body">
                     <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
                         <div class="mb-3 mb-sm-0">
-                            <h5 class="card-title fw-semibold">Data Income & Expense</h5>
+                            <h5 class="card-title fw-semibold">Grafik Data Pemasukan dan Pengeluaran</h5>
                         </div>
                         <div>
                             <select id="periodFilter" class="form-select">
-                                <option value="7" selected>Last 7 Days</option>
-                                <option value="14">Last 14 Days</option>
-                                <option value="month">This Month</option>
+                                <option value="7" selected>7 Hari Terakhir</option>
+                                <option value="14">14 Hari Terakhir</option>
+                                <option value="month">Bulan Ini</option>
                             </select>
 
                         </div>
@@ -181,7 +191,7 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title fw-semibold mb-4">Add Transaction</h5>
+                <h5 class="card-title fw-semibold mb-4">Tambah Transaksi</h5>
 
                 @if ($errors->any())
                     <div class="alert alert-danger">
@@ -197,15 +207,15 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">Transaction Type</label>
+                        <label class="form-label">Jenis Transaksi</label>
                         <select name="type" id="type" class="form-select" required>
-                            <option value="income" {{ old('type') == 'income' ? 'selected' : '' }}>Income</option>
-                            <option value="expense" {{ old('type') == 'expense' ? 'selected' : '' }}>Expense</option>
+                            <option value="income" {{ old('type') == 'income' ? 'selected' : '' }}>Pemasukan</option>
+                            <option value="expense" {{ old('type') == 'expense' ? 'selected' : '' }}>Pengeluaran</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Category</label>
+                        <label class="form-label">Kategori</label>
 
                         <select name="income_category_id" id="incomeCategory" class="form-control">
                             @foreach($incomeCategories as $category)
@@ -225,32 +235,32 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Amount</label>
+                        <label class="form-label">Jumlah</label>
 
-                        <input type="text" id="amount_format" class="form-control" placeholder="Enter amount"
+                        <input type="text" id="amount_format" class="form-control" placeholder="Masukkan jumlah"
                             value="{{ old('amount') ? number_format(old('amount'), 0, ',', '.') : '' }}" required>
 
                         <input type="hidden" name="amount" id="amount_raw" value="{{ old('amount') }}">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Description</label>
+                        <label class="form-label">Keterangan</label>
                         <textarea name="description" class="form-control" rows="3"
-                            placeholder="Transaction notes (optional)">{{ old('description') }}</textarea>
+                            placeholder="Catatan transaksi (opsional)">{{ old('description') }}</textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Date</label>
+                        <label class="form-label">Tanggal</label>
                         <input type="date" name="date" class="form-control" id="dateInput" required>
                     </div>
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('transactions.index') }}" class="btn btn-secondary">
-                            Back
+                            Kembali
                         </a>
 
                         <button type="submit" class="btn btn-primary">
-                            Save Transaction
+                            Simpan Transaksi
                         </button>
                     </div>
 
@@ -298,13 +308,6 @@
         });
     </script>
 
-    <script>
-        tippy('[data-tippy-content]', {
-            placement: 'top',
-            animation: 'scale',
-            theme: 'light',
-        });
-    </script>
     <script>
         window.chartDays = @json($days);
         window.chartIncome = @json($income);

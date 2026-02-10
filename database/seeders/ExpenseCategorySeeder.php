@@ -14,17 +14,51 @@ class ExpenseCategorySeeder extends Seeder
     public function run(): void
     {
         $items = [
-            'food_and_drinks',      // makan_minum
-            'transportation',       // transportasi
-            'shopping',             // belanja_kebutuhan
-            'lifestyle',            // gaya_hidup
-            'entertainment',        // hiburan
-            'bills',                // tagihan
-            'transfers',            // transfer
-            'donation',             // donasi
-            'others'                // lainnya
-        ];
+            // Kebutuhan pokok
+            'makan_minum',
+            'sembako',
+            'kebutuhan_rumah',
+            'kesehatan',
+            'pendidikan',
 
+            // Transportasi
+            'transportasi',
+            'bensin',
+            'parkir_tol',
+            'ojek_taxi',
+            'servis_kendaraan',
+
+            // Tagihan rutin
+            'listrik',
+            'air',
+            'internet',
+            'pulsa',
+            'langganan',
+
+            // Gaya hidup
+            'gaya_hidup',
+            'hiburan',
+            'hobi',
+            'traveling',
+            'fashion',
+            'kopi_jajan',
+
+            // Keuangan
+            'tabungan',
+            'investasi',
+            'cicilan',
+            'asuransi',
+
+            // Sosial
+            'donasi',
+            'kado',
+            'keluarga',
+            'teman',
+
+            // Cadangan
+            'darurat',
+            'lainnya',
+        ];
         foreach ($items as $item) {
             ExpenseCategory::create(['name' => $item]);
         }

@@ -9,11 +9,11 @@ $(function () {
   var chartOptions = {
     series: [
       {
-        name: "Income",
+        name: "Pemasukan",
         data: window.chartIncome && window.chartIncome.length ? window.chartIncome : [0]
       },
       {
-        name: "Expense",
+        name: "Pengeluaran",
         data: window.chartExpense && window.chartExpense.length ? window.chartExpense : [0]
       },
     ],
@@ -85,8 +85,8 @@ $(function () {
       tickAmount: 4,
       labels: {
         formatter: function (value) {
-          if (value >= 1000000) return (value / 1000000).toFixed(1) + " M";
-          if (value >= 1000) return (value / 1000).toFixed(0) + " K";
+          if (value >= 1000000) return (value / 1000000).toFixed(1) + " jt";
+          if (value >= 1000) return (value / 1000).toFixed(0) + " rb";
           return value;
         },
         style: { cssClass: "grey--text lighten-2--text fill-color" },
@@ -194,8 +194,8 @@ document.getElementById("periodFilter").addEventListener("change", function () {
       mainChart.updateOptions({
         xaxis: { categories: data.days },
         series: [
-          { name: "Income", data: data.income },
-          { name: "Expense", data: data.expense }
+          { name: "Pemasukan", data: data.income },
+          { name: "Pengeluaran", data: data.expense }
         ]
       });
 

@@ -9,12 +9,12 @@
                 <!-- Sambutan & Balance -->
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                     <div class="mb-3 mb-md-0">
-                        <h4 class="fw-bold text-white">Hello, {{ auth()->user()->name }}</h4>
-                        <p class="mb-0">Welcome back! Manage your finances effectively.</p>
+                        <h4 class="fw-bold text-white">Halo, {{ auth()->user()->name }}</h4>
+                        <p class="mb-0">Selamat datang kembali! Kelola keuanganmu disini.</p>
                     </div>
                     <div class="text-md-end">
                         <h3 class="fw-bold mb-1 text-white">
-                            Rp {{ number_format(auth()->user()->balance ?? 0, 2, ',', '.') }}
+                            Rp {{ number_format(auth()->user()->balance ?? 0, 0, ',', '.') }}
                         </h3>
                         <small class="d-block">IDR</small>
                     </div>
@@ -31,18 +31,18 @@
                     <!-- Yearly Breakup -->
                     <div class="card overflow-hidden">
                         <div class="card-body p-4">
-                            <h5 class="card-title mb-9 fw-semibold">Average Monthly Income</h5>
+                            <h5 class="card-title mb-9 fw-semibold">Rata-rata Pemasukan perbulan</h5>
                             <div class="row align-items-center">
                                 <div class="col-12">
                                     <h4 class="fw-semibold mb-3">Rp
-                                        {{ number_format($averageMonthlyIncome, 2, ',', '.') }} IDR
+                                        {{ number_format($averageMonthlyIncome, 0, ',', '.') }} IDR
                                     </h4>
                                     <div class="d-flex align-items-center mb-3">
                                         <span
                                             class="me-2 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
                                             <i class="ti ti-info-circle"></i>
                                         </span>
-                                        <p class="text-dark me-1 fs-3 mb-0">Based on your recorded incomes</p>
+                                        <p class="text-dark me-1 fs-3 mb-0">Berdasarkan data pemasukan Anda</p>
                                     </div>
                                 </div>
                             </div>
@@ -55,16 +55,16 @@
                         <div class="card-body">
                             <div class="row align-items-start">
                                 <div class="col-8">
-                                    <h5 class="card-title mb-9 fw-semibold">Average Monthly Expense</h5>
+                                    <h5 class="card-title mb-9 fw-semibold">Rata-rata Pengeluaran Bulanan</h5>
                                     <h4 class="fw-semibold mb-3">
-                                        Rp {{ number_format($averageMonthlyExpense, 2, ',', '.') }} IDR
+                                        Rp {{ number_format($averageMonthlyExpense, 0, ',', '.') }} IDR
                                     </h4>
                                     <div class="d-flex align-items-center pb-1">
                                         <span
                                             class="me-2 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
                                             <i class="ti ti-info-circle"></i>
                                         </span>
-                                        <p class="text-dark me-1 fs-3 mb-0">Based on your recorded expenses</p>
+                                        <p class="text-dark me-1 fs-3 mb-0">Berdasarkan data pengeluaran Anda</p>
                                     </div>
                                 </div>
                             </div>
@@ -78,13 +78,13 @@
                 <div class="card-body">
                     <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
                         <div class="mb-3 mb-sm-0">
-                            <h5 class="card-title fw-semibold">Data Income & Expense</h5>
+                            <h5 class="card-title fw-semibold">Grafik Data Pemasukan dan Pengeluaran</h5>
                         </div>
                         <div>
                             <select id="periodFilter" class="form-select">
-                                <option value="7" selected>Last 7 Days</option>
-                                <option value="14">Last 14 Days</option>
-                                <option value="month">This Month</option>
+                                <option value="7" selected>7 Hari Terakhir</option>
+                                <option value="14">14 Hari Terakhir</option>
+                                <option value="month">Bulan Ini</option>
                             </select>
 
                         </div>
@@ -96,7 +96,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <h5 class="card-title fw-semibold mb-4">My Wishlist</h5>
+            <h5 class="card-title fw-semibold mb-4">Barang Wishlist</h5>
         </div>
     </div>
     <div class="row">

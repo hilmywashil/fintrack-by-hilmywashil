@@ -48,7 +48,10 @@ class TransactionController extends Controller
             $query->where('type', request('type'));
         }
 
-        $transactions = $query->latest()->paginate(10)->withQueryString();
+        if (request('date')) {
+            $query->whereDate('date', request('date'));
+        }
+        $transactions = $query->orderBy('date', 'desc')->paginate(10)->withQueryString();
         $incomeCategories = IncomeCategory::all();
         $expenseCategories = ExpenseCategory::all();
 
@@ -93,5 +96,18 @@ class TransactionController extends Controller
             ->with('success', 'Transaction added successfully.');
     }
 
+    public function resetAll()
+    {
+        $user = auth()->user();
 
+        DB::transaction(function () use ($user) {
+
+            $user->transactions()->delete();
+
+            $user->balance = 0;
+            $user->save();
+        });
+
+        return back()->with('success', 'Semua data keuangan berhasil dihapus.');
+    }
 }
