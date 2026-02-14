@@ -51,23 +51,23 @@
                                             <input class="form-check-input primary" type="checkbox" name="remember"
                                                 id="remember">
                                             <label class="form-check-label text-dark" for="remember">
-                                                Remember Me
+                                                Ingat Saya
                                             </label>
                                         </div>
 
-                                        <a class="text-primary fw-bold" href="#">
-                                            Forgot Password ?
+                                        <a class="text-primary fw-bold" href="{{ route('forgot.password') }}">
+                                            Lupa Password ?
                                         </a>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
-                                        Sign In
+                                        Login
                                     </button>
 
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <p class="fs-4 mb-0 fw-bold">New to FinTrack?</p>
+                                        <p class="fs-4 mb-0 fw-bold">Tidak punya Akun?</p>
                                         <a class="text-primary fw-bold ms-2" href="{{ route('register') }}">
-                                            Create an account
+                                            Buat Akun
                                         </a>
                                     </div>
                                 </form>

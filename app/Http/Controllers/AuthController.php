@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Session;
+use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\LoginActivity;
+
 
 class AuthController extends Controller
 {
@@ -49,17 +53,26 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
 
             $request->session()->regenerate();
-
             $user = Auth::user();
 
             if ($user->is_suspended == 1) {
-
                 Auth::logout();
-
                 return redirect()->route('login')
                     ->with('suspended', true)
                     ->with('name', $user->name);
             }
+
+            $agent = new Agent();
+
+            LoginActivity::create([
+                'user_id' => $user->id,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->header('User-Agent'),
+                'device' => $agent->platform() . ' - ' . $agent->browser(),
+                'login_at' => now(),
+            ]);
+
+            session()->flash('welcome_popup', true);
 
             return match ($user->role) {
                 'admin' => redirect('/admin/dashboard')->with('success', 'Login Success'),
@@ -67,15 +80,14 @@ class AuthController extends Controller
             };
         }
 
-
         return back()->withErrors([
             'email' => 'Email atau password salah',
         ]);
     }
-
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

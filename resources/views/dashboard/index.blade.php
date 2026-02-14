@@ -10,7 +10,7 @@
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
                     <div class="mb-3 mb-md-0">
                         <h4 class="fw-bold text-white">Halo, {{ auth()->user()->name }}</h4>
-                        <p class="mb-0">Selamat datang kembali! Kelola keuanganmu disini.</p>
+                        <p class="mb-0">Selamat datang kembali</p>
                     </div>
                     <div class="text-md-end">
                         <h3 class="fw-bold mb-1 text-white">
@@ -94,89 +94,96 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <h5 class="card-title fw-semibold mb-4">Barang Wishlist</h5>
+    <div class="row mt-4">
+
+        {{-- Income Terbaru --}}
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold mb-3">
+                        Pemasukan Terbaru
+                    </h5>
+
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>Kategori</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($latestIncomes as $income)
+                                    <tr>
+                                        <td class="fw-semibold text-success">
+                                            Rp {{ number_format($income->amount, 0, ',', '.') }}
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light-success text-success">
+                                                {{ Str::ucfirst($income->incomeCategory->name ?? '-') }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="2" class="text-center text-muted">
+                                            Belum ada income
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
         </div>
+
+        {{-- Expense Terbaru --}}
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title fw-semibold mb-3">
+                        Pengeluaran Terbaru
+                    </h5>
+
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>Kategori</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($latestExpenses as $expense)
+                                    <tr>
+                                        <td class="fw-semibold text-danger">
+                                            Rp {{ number_format($expense->amount, 0, ',', '.') }}
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light-danger text-danger">
+                                                {{ Str::ucfirst($expense->expenseCategory->name ?? '-') }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="2" class="text-center text-muted">
+                                            Belum ada expense
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
-    <div class="row">
-        <div class="col-sm-6 col-xl-3">
-            <div class="card overflow-hidden rounded-2">
-                <div class="position-relative">
-                    <a href="javascript:void(0)"><img src="../assets/images/products/s4.jpg" class="card-img-top rounded-0"
-                            alt="..."></a>
-                    <a href="javascript:void(0)"
-                        class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                            class="ti ti-basket fs-4"></i></a>
-                </div>
-                <div class="card-body pt-3 p-4">
-                    <h6 class="fw-semibold fs-4">Boat Headphone</h6>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <h6 class="fw-semibold fs-4 mb-0">$50</h6>
 
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="card overflow-hidden rounded-2">
-                <div class="position-relative">
-                    <a href="javascript:void(0)"><img src="../assets/images/products/s5.jpg" class="card-img-top rounded-0"
-                            alt="..."></a>
-                    <a href="javascript:void(0)"
-                        class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                            class="ti ti-basket fs-4"></i></a>
-                </div>
-                <div class="card-body pt-3 p-4">
-                    <h6 class="fw-semibold fs-4">MacBook Air Pro</h6>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <h6 class="fw-semibold fs-4 mb-0">$650</h6>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="card overflow-hidden rounded-2">
-                <div class="position-relative">
-                    <a href="javascript:void(0)"><img src="../assets/images/products/s7.jpg" class="card-img-top rounded-0"
-                            alt="..."></a>
-                    <a href="javascript:void(0)"
-                        class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                            class="ti ti-basket fs-4"></i></a>
-                </div>
-                <div class="card-body pt-3 p-4">
-                    <h6 class="fw-semibold fs-4">Red Valvet Dress</h6>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <h6 class="fw-semibold fs-4 mb-0">$150</h6>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="card overflow-hidden rounded-2">
-                <div class="position-relative">
-                    <a href="javascript:void(0)"><img src="../assets/images/products/s11.jpg" class="card-img-top rounded-0"
-                            alt="..."></a>
-                    <a href="javascript:void(0)"
-                        class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3"
-                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart"><i
-                            class="ti ti-basket fs-4"></i></a>
-                </div>
-                <div class="card-body pt-3 p-4">
-                    <h6 class="fw-semibold fs-4">Cute Soft Teddybear</h6>
-                    <div class="d-flex align-items-center justify-content-between">
-                        <h6 class="fw-semibold fs-4 mb-0">$285</h6>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('scripts')

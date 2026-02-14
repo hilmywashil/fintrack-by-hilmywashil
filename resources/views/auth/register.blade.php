@@ -33,19 +33,19 @@
                                     <img src="{{ asset('assets/images/logos/logo.png') }}" width="180" alt="">
                                 </a>
 
-                                <p class="text-center">Buat akun FinTrack-mu.</p>
+                                <p class="text-center">Buat akun FinTrack.</p>
 
                                 <form action="{{ route('register') }}" method="POST">
                                     @csrf
 
                                     <div class="mb-3">
-                                        <label class="form-label">Name</label>
+                                        <label class="form-label">Nama</label>
                                         <input type="text" class="form-control" name="name" required
                                             value="{{ old('name') }}">
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">Email Address</label>
+                                        <label class="form-label">Alamat Email</label>
                                         <input type="email" class="form-control" name="email" required
                                             value="{{ old('email') }}">
                                     </div>
@@ -56,21 +56,21 @@
                                     </div>
 
                                     <div class="mb-4">
-                                        <label class="form-label">Confirm Password</label>
+                                        <label class="form-label">Konfirmasi Password</label>
                                         <input type="password" class="form-control" name="password_confirmation"
                                             required>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
-                                        Sign Up
+                                        Buat Akun
                                     </button>
 
                                     <div class="d-flex align-items-center justify-content-center">
                                         <p class="fs-4 mb-0 fw-bold">
-                                            Already have an Account?
+                                            Sudah punya Akun?
                                         </p>
                                         <a class="text-primary fw-bold ms-2" href="{{ route('login') }}">
-                                            Sign In
+                                            Login
                                         </a>
                                     </div>
 

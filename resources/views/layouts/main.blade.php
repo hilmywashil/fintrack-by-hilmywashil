@@ -55,6 +55,30 @@
             </div>
         </div>
     </div>
+    @if(session('welcome_popup'))
+        <!-- POPUP MODAL -->
+        <div class="modal fade" id="welcomePopup" tabindex="-1" aria-labelledby="welcomePopupLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow text-center">
+                    <div class="modal-body py-5">
+                        {{-- Ilustrasi robot --}}
+                        <img src="{{ asset('assets/images/robot.svg') }}" alt="Robot" class="mb-4" style="max-width:150px;">
+
+                        <h5 class="fw-semibold mb-3">Selamat Datang!</h5>
+                        <p class="text-muted mb-4">
+                            Aplikasi saat ini masih dalam tahap akses awal.<br>
+                            Beri feedback agar aplikasi bisa lebih baik!
+                        </p>
+
+                        <div class="d-flex justify-content-center gap-2">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <a href="{{ route('feedback.index') }}" class="btn btn-primary">Beri Feedback</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -63,6 +87,12 @@
     <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
     @stack('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var welcomeModal = new bootstrap.Modal(document.getElementById('welcomePopup'));
+            welcomeModal.show();
+        });
+    </script>
     <script>
         tippy('[data-tippy-content]', {
             placement: 'top',

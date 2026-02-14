@@ -22,8 +22,8 @@
                 <div class="card-body p-4">
 
                     <h5 class="card-title fw-semibold mb-4">
-                        Daftar Transaksi Terbaru
-
+                        Semua Transaksi
+                        
                         @if(request('type'))
                             - {{ request('type') == 'income' ? 'Pemasukan' : 'Pengeluaran' }}
                         @endif
@@ -33,33 +33,46 @@
                         @endif
                     </h5>
 
-                    <div
-                        class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3 gap-2">
+                    <div class="md-4 mb-4">
+                        <form method="GET" class="row g-3 align-items-end">
 
-                        <form method="GET"
-                            class="d-flex flex-column flex-md-row gap-2 align-items-stretch align-items-md-center w-100 w-md-auto">
+                            {{-- Tipe --}}
+                            <div class="col-12 col-md-3">
+                                <label class="form-label fw-semibold">Tipe</label>
+                                <select name="type" class="form-select">
+                                    <option value="">Semua Tipe</option>
+                                    <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>
+                                        Pemasukan
+                                    </option>
+                                    <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>
+                                        Pengeluaran
+                                    </option>
+                                </select>
+                            </div>
 
-                            <select name="type" class="form-select">
-                                <option value="">Semua Tipe</option>
-                                <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>
-                                    Pemasukan
-                                </option>
-                                <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>
-                                    Pengeluaran
-                                </option>
-                            </select>
+                            {{-- Dari --}}
+                            <div class="col-12 col-md-3">
+                                <label class="form-label fw-semibold">Dari Tanggal</label>
+                                <input type="date" name="start_date" class="form-control"
+                                    value="{{ request('start_date') }}">
+                            </div>
 
-                            <input type="date" name="date" class="form-control" value="{{ request('date') }}">
+                            {{-- Sampai --}}
+                            <div class="col-12 col-md-3">
+                                <label class="form-label fw-semibold">Sampai Tanggal</label>
+                                <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                            </div>
 
-                            <button type="submit" class="btn btn-primary">
-                                Filter
-                            </button>
+                            {{-- Tombol --}}
+                            <div class="col-12 col-md-3 d-flex gap-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    Filter
+                                </button>
 
-                            @if(request('type') || request('date'))
-                                <a href="{{ route('transactions.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('transactions.index') }}" class="btn btn-outline-secondary w-100">
                                     Reset
                                 </a>
-                            @endif
+                            </div>
 
                         </form>
 

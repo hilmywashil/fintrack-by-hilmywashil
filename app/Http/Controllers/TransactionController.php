@@ -48,10 +48,16 @@ class TransactionController extends Controller
             $query->where('type', request('type'));
         }
 
-        if (request('date')) {
-            $query->whereDate('date', request('date'));
+        if (request('start_date')) {
+            $query->whereDate('date', '>=', request('start_date'));
         }
+
+        if (request('end_date')) {
+            $query->whereDate('date', '<=', request('end_date'));
+        }
+
         $transactions = $query->orderBy('date', 'desc')->paginate(10)->withQueryString();
+
         $incomeCategories = IncomeCategory::all();
         $expenseCategories = ExpenseCategory::all();
 
@@ -92,8 +98,7 @@ class TransactionController extends Controller
         $transaction->save();
         $user->save();
 
-        return redirect()->route('transactions.index')
-            ->with('success', 'Transaction added successfully.');
+        return back()->with('success', 'Transaction added successfully.');
     }
 
     public function resetAll()
@@ -109,5 +114,27 @@ class TransactionController extends Controller
         });
 
         return back()->with('success', 'Semua data keuangan berhasil dihapus.');
+    }
+
+    public function destroy($id)
+    {
+        DB::transaction(function () use ($id) {
+
+            $transaction = Transaction::where('user_id', auth()->id())
+                ->findOrFail($id);
+
+            $user = auth()->user();
+
+            if ($transaction->type === 'income') {
+                $user->balance -= $transaction->amount;
+            } else {
+                $user->balance += $transaction->amount;
+            }
+
+            $user->save();
+            $transaction->delete();
+        });
+
+        return back()->with('success', 'Transaksi berhasil dihapus.');
     }
 }

@@ -12,10 +12,26 @@
                 <div class="card">
                     <div class="card-body text-center">
 
-                        <img src="{{ auth()->user()->photo
-        ? asset('storage/' . auth()->user()->photo)
-        : asset('assets/images/profile/user-1.png') }}" class="rounded-circle mb-3" width="120" height="120"
-                            style="object-fit: cover;" alt="Foto Profil">
+                        <div class="position-relative d-inline-block">
+
+                            <img src="{{ auth()->user()->photo ? asset('storage/' . auth()->user()->photo) : asset('assets/images/profile/user-1.png') }}"
+                                class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;"
+                                alt="Foto Profil">
+
+                            @if(auth()->user()->photo)
+                                <form action="{{ route('profile.photo.delete') }}" method="POST" class="delete-photo-form">
+
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="button" class="btn btn-danger btn-sm position-absolute btn-delete-photo"
+                                        style="top: 5px; right: 5px; border-radius: 50%; width: 32px; height: 32px;">
+                                        <i class="ti ti-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
+
+                        </div>
                         <h5 class="fw-semibold">
                             {{ auth()->user()->name }}
                         </h5>
@@ -80,15 +96,21 @@
                                     required>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-4">
                                 <label class="form-label">Email</label>
                                 <input type="email" name="email" class="form-control" value="{{ auth()->user()->email }}"
                                     required>
                             </div>
 
-                            <hr>
+                            <hr class="my-2">
 
-                            <h6 class="fw-semibold mb-3">Ganti Password (Opsional)</h6>
+                            <h6 class="fw-semibold mb-3 mt-4">Ganti Password (Opsional)</h6>
+
+                            <div class="mb-3">
+                                <label class="form-label">Password Saat Ini</label>
+                                <input type="password" name="current_password" class="form-control"
+                                    placeholder="Masukkan password saat ini">
+                            </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Password Baru</label>
@@ -115,3 +137,34 @@
 
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const deleteBtn = document.querySelector('.btn-delete-photo');
+
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function () {
+
+                    Swal.fire({
+                        title: 'Hapus Foto Profil?',
+                        text: "Foto profil kamu akan dihapus secara permanen!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya, Hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.closest('form').submit();
+                        }
+                    });
+
+                });
+            }
+
+        });
+    </script>
+@endpush

@@ -22,7 +22,7 @@
                 <div class="card-body p-4">
 
                     <h5 class="card-title fw-semibold mb-4">
-                        Registered Users
+                        Semua Pengguna ({{ $users->total() }})
                         @if(request('role'))
                             - {{ ucfirst(request('role')) }}
                         @endif
@@ -82,16 +82,13 @@
                                         <h6 class="fw-semibold mb-0">Nama</h6>
                                     </th>
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Email</h6>
-                                    </th>
-                                    <th>
                                         <h6 class="fw-semibold mb-0">Role</h6>
                                     </th>
                                     <th>
                                         <h6 class="fw-semibold mb-0">Status</h6>
                                     </th>
                                     <th>
-                                        <h6 class="fw-semibold mb-0">Registered Date</h6>
+                                        <h6 class="fw-semibold mb-0">Tanggal Register</h6>
                                     </th>
                                     <th>
                                         <h6 class="fw-semibold mb-0">Action</h6>
@@ -101,76 +98,98 @@
 
                             <tbody>
                                 @forelse ($users as $user)
-                                                        <tr>
-                                                            <td>
-                                                                <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
-                                                            </td>
+                                    <tr>
+                                        <td>
+                                            <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
+                                        </td>
 
-                                                            <td>
-                                                                <img src="{{ $user->photo
-                                    ? asset('storage/' . $user->photo)
-                                    : asset('assets/images/profile/user-1.png') }}" class="rounded-circle" width="40"
-                                                                    height="40" style="object-fit: cover;">
-                                                            </td>
+                                        <td>
+                                            <img src="{{ $user->photo ? asset('storage/' . $user->photo) : asset('assets/images/profile/user-1.png') }}"
+                                                class="rounded-circle" width="40" height="40" style="object-fit: cover;">
+                                        </td>
 
-                                                            <td>
-                                                                <h6 class="fw-semibold mb-1">{{ $user->name }}</h6>
-                                                            </td>
-                                                            <td>
-                                                                <h6 class="fw-semibold mb-1">
-                                                                    {{ $user->email }}
-                                                                </h6>
-                                                            </td>
-                                                            <td>
-                                                                <span class="badge {{ $user->role == 'admin' ? 'bg-primary' : 'bg-secondary' }} ">
-                                                                    {{ ucfirst($user->role) }}
-                                                                </span>
-                                                            </td>
-                                                            <td>
+                                        <td>
+                                            <h6 class="fw-semibold mb-1" data-tippy-content="{{ $user->name }}">
+                                                {{ Str::limit($user->name, 20) }}
+                                            </h6>
+                                            <p class="text-muted small mb-0">{{ $user->email }}</p>
+                                        </td>
+                                        <td>
+                                            <span class="badge {{ $user->role == 'admin' ? 'bg-primary' : 'bg-secondary' }} ">
+                                                {{ ucfirst($user->role) }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if($user->is_suspended)
+                                                <span class="badge bg-danger ">Suspended</span>
+                                            @else
+                                                <span class="badge bg-success">Active</span>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            <p class="mb-0 fw-normal">
+                                                {{ $user->created_at ? $user->created_at->format('d M Y') : '-' }}
+                                            </p>
+                                        </td>
+                                        <td class="position-static">
+                                            @if(Auth::id() != $user->id)
+
+                                                <div class="dropdown position-static">
+                                                    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                                                        data-bs-toggle="dropdown">
+                                                        Actions
+                                                    </button>
+
+                                                    <ul class="dropdown-menu">
+                                                        <li>
+                                                            <form method="POST"
+                                                                action="{{ route('admin.users.login-as', $user->id) }}">
+                                                                @csrf
+                                                                <button type="submit" class="dropdown-item">
+                                                                    Login as {{ strtok($user->name, ' ') }}
+                                                                </button>
+                                                            </form>
+                                                        </li>
+
+                                                        <li>
+                                                            <form method="POST"
+                                                                action="{{ route('admin.users.toggle-suspend', $user->id) }}">
+                                                                @csrf
+                                                                @method('PUT')
+
                                                                 @if($user->is_suspended)
-                                                                    <span class="badge bg-danger ">Suspended</span>
+                                                                    <button type="submit" class="dropdown-item text-success">
+                                                                        Unsuspend
+                                                                    </button>
                                                                 @else
-                                                                    <span class="badge bg-success">Active</span>
+                                                                    <button type="submit" class="dropdown-item text-danger">
+                                                                        Suspend
+                                                                    </button>
                                                                 @endif
-                                                            </td>
+                                                            </form>
+                                                        </li>
 
-                                                            <td>
-                                                                <p class="mb-0 fw-normal" data-tippy-content="{{ $user->created_at ?? '-' }}">
-                                                                    {{ Str::limit($user->created_at ?? '-', 20) }}
-                                                                </p>
-                                                            </td>
-                                                            <td class="d-flex gap-2">
-                                                                @if(Auth::id() != $user->id)
+                                                        <li>
+                                                            <form action="{{ route('admin.users.destroy', $user->id) }}"
+                                                                method="POST"
+                                                                onsubmit="return confirm('Are you sure want to delete this user?')">
+                                                                @csrf
+                                                                @method('DELETE')
 
-                                                                    <!-- Login As -->
-                                                                    <form method="POST" action="{{ route('admin.users.login-as', $user->id) }}">
-                                                                        @csrf
-                                                                        <button type="submit" class="btn btn-sm btn-warning">
-                                                                            Login as this user
-                                                                        </button>
-                                                                    </form>
+                                                                <button type="submit" class="dropdown-item text-danger">
+                                                                    Delete User
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    </ul>
+                                                </div>
 
-                                                                    <!-- Suspend / Unsuspend -->
-                                                                    <form method="POST" action="{{ route('admin.users.toggle-suspend', $user->id) }}">
-                                                                        @csrf
-                                                                        @method('PUT')
-
-                                                                        @if($user->is_suspended)
-                                                                            <button type="submit" class="btn btn-sm btn-success">
-                                                                                Unsuspend
-                                                                            </button>
-                                                                        @else
-                                                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                                                Suspend
-                                                                            </button>
-                                                                        @endif
-                                                                    </form>
-
-                                                                @else
-                                                                    <span class="text-muted">Current User</span>
-                                                                @endif
-                                                            </td>
-                                                        </tr>
+                                            @else
+                                                <span class="text-muted">Current User</span>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @empty
                                     <tr>
                                         <td colspan="7" class="text-center">Tidak ada Data</td>

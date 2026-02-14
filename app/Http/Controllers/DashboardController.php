@@ -71,7 +71,20 @@ class DashboardController extends Controller
             ? $totalIncome / $incomeMonthsCount
             : 0;
 
-        return view('dashboard.index', compact('days', 'income', 'expense', 'totalExpense', 'averageMonthlyExpense', 'totalIncome', 'averageMonthlyIncome'));
+        $latestIncomes = Transaction::where('user_id', $userId)
+            ->where('type', 'income')
+            ->latest('date')
+            ->take(5)
+            ->get();
+
+        $latestExpenses = Transaction::where('user_id', $userId)
+            ->where('type', 'expense')
+            ->latest('date')
+            ->take(5)
+            ->get();
+
+
+        return view('dashboard.index', compact('days', 'income', 'expense', 'totalExpense', 'averageMonthlyExpense', 'totalIncome', 'averageMonthlyIncome', 'latestIncomes', 'latestExpenses'));
     }
 
     // API JS Chart Data

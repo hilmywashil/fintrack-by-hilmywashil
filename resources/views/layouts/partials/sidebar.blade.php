@@ -57,6 +57,15 @@
                             <span class="hide-menu">Kategori</span>
                         </a>
                     </li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="{{ route('admin.feedback.index') }}" aria-expanded="false">
+                            <span>
+                                <i class="ti ti-message-circle"></i>
+                            </span>
+                            <span class="hide-menu">Daftar Feedback</span>
+                        </a>
+                    </li>
+
                 @endif
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
@@ -87,13 +96,14 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="#" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('reports.overview') }}">
                         <span>
                             <i class="ti ti-chart-pie"></i>
                         </span>
                         <span class="hide-menu">Laporan</span>
                     </a>
                 </li>
+
                 <li class="sidebar-item">
 
                     <form id="resetForm" action="{{ route('transactions.reset') }}" method="POST">
@@ -113,18 +123,31 @@
                 </li>
                 <li class="nav-small-cap">
                     <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">Menu Lainnya</span>
+                    <span class="hide-menu">Pengaturan</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="#" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('settings.login-activity') }}" aria-expanded="false">
                         <span>
-                            <i class="ti ti-settings"></i>
+                            <i class="ti ti-history"></i>
                         </span>
-                        <span class="hide-menu">Pengaturan</span>
+                        <span class="hide-menu">Aktivitas Login</span>
+                    </a>
+                </li>
+                <li class="nav-small-cap">
+                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                    <span class="hide-menu">Menu Lainnya</span>
+                </li>
+
+                <li class="sidebar-item">
+                    <a class="sidebar-link" href="{{ route('feedback.index') }}" aria-expanded="false">
+                        <span>
+                            <i class="ti ti-message-circle"></i>
+                        </span>
+                        <span class="hide-menu">Feedback</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="#" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('help-center') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-help"></i>
                         </span>

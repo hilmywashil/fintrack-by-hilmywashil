@@ -77,7 +77,55 @@
         <div class="card">
             <div class="card-body">
 
-                <h5 class="card-title mb-4">Data Pemasukan</h5>
+                <div
+                    class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mb-4">
+                    <h5 class="card-title mb-0">Data Pemasukan</h5>
+
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalTambahPemasukan">
+                        <i class="ti ti-plus me-1"></i> Tambah Pemasukan
+                    </button>
+                </div>
+                <form method="GET" action="{{ route('incomes.index') }}" class="mb-4">
+                    <div class="row g-3 align-items-end">
+
+                        {{-- Dari Tanggal --}}
+                        <div class="col-12 col-md-3">
+                            <label class="form-label">Dari Tanggal</label>
+                            <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+                        </div>
+
+                        {{-- Sampai Tanggal --}}
+                        <div class="col-12 col-md-3">
+                            <label class="form-label">Sampai Tanggal</label>
+                            <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                        </div>
+
+                        {{-- Kategori --}}
+                        <div class="col-12 col-md-3">
+                            <label class="form-label">Kategori</label>
+                            <select name="category" class="form-select">
+                                <option value="">Semua Kategori</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                        {{ Str::title(str_replace('_', ' ', $category->name)) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Tombol --}}
+                        <div class="col-12 col-md-3 d-flex gap-2">
+                            <button type="submit" class="btn btn-success w-100">
+                                Filter
+                            </button>
+
+                            <a href="{{ route('incomes.index') }}" class="btn btn-outline-secondary w-100">
+                                Reset
+                            </a>
+                        </div>
+
+                    </div>
+                </form>
 
                 <div class="table-responsive">
                     <table class="table align-middle">
@@ -87,6 +135,8 @@
                                 <th>Kategori</th>
                                 <th>Jumlah</th>
                                 <th>Catatan</th>
+                                <th>Aksi</th>
+
                             </tr>
                         </thead>
 
@@ -109,6 +159,17 @@
                                         <p class="mb-0 fw-normal" data-tippy-content="{{ $income->description ?? '-' }}">
                                             {{ Str::limit($income->description ?? '-', 20) }}
                                         </p>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('transactions.destroy', $income->id) }}" method="POST"
+                                            class="form-delete">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="ti ti-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
 
                                 </tr>
@@ -161,5 +222,113 @@
         </div>
 
     </div>
+    <!-- Modal Tambah Pemasukan -->
+    <div class="modal fade" id="modalTambahPemasukan" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <form action="{{ route('transactions.store') }}" method="POST">
+                    @csrf
+
+                    <input type="hidden" name="type" value="income">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tambah Pemasukan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal</label>
+                            <input type="date" name="date" class="form-control" value="{{ date('Y-m-d') }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <select name="income_category_id" class="form-select" required>
+                                <option value="">Pilih Kategori</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">
+                                        {{ Str::title(str_replace('_', ' ', $category->name)) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Jumlah</label>
+
+                            <input type="text" id="amount_format" class="form-control" placeholder="Masukkan jumlah"
+                                value="{{ old('amount') ? number_format(old('amount'), 0, ',', '.') : '' }}" required>
+
+                            <input type="hidden" name="amount" id="amount_raw" value="{{ old('amount') }}">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Catatan (Opsional)</label>
+                            <textarea name="description" class="form-control" rows="3"></textarea>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                            Batal
+                        </button>
+
+                        <button type="submit" class="btn btn-success">
+                            Simpan
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 @endsection
+
+@push('scripts')
+    <script>
+        const inputFormat = document.getElementById('amount_format');
+        const inputRaw = document.getElementById('amount_raw');
+
+        inputFormat.addEventListener('input', function () {
+            let value = this.value.replace(/\D/g, '');
+            inputRaw.value = value;
+            this.value = new Intl.NumberFormat('id-ID').format(value);
+        });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const deleteForms = document.querySelectorAll('.form-delete');
+
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Yakin ingin menghapus?',
+                    text: "Data yang dihapus tidak bisa dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+
+            });
+        });
+
+    });
+</script>
+
+@endpush
