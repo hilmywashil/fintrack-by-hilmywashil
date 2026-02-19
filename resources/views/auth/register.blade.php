@@ -50,15 +50,26 @@
                                             value="{{ old('email') }}">
                                     </div>
 
-                                    <div class="mb-3">
+                                    <div class="mb-3 position-relative">
                                         <label class="form-label">Password</label>
-                                        <input type="password" class="form-control" name="password" required>
+                                        <input type="password" class="form-control pe-5" id="password" name="password"
+                                            required>
+
+                                        <span class="toggle-password" data-target="password"
+                                            style="position:absolute; top: 38px; right:15px; cursor:pointer;">
+                                            <i class="ti ti-eye"></i>
+                                        </span>
                                     </div>
 
-                                    <div class="mb-4">
+                                    <div class="mb-4 position-relative">
                                         <label class="form-label">Konfirmasi Password</label>
-                                        <input type="password" class="form-control" name="password_confirmation"
-                                            required>
+                                        <input type="password" class="form-control pe-5" id="password_confirmation"
+                                            name="password_confirmation" required>
+
+                                        <span class="toggle-password" data-target="password_confirmation"
+                                            style="position:absolute; top: 38px; right:15px; cursor:pointer;">
+                                            <i class="ti ti-eye"></i>
+                                        </span>
                                     </div>
 
                                     <button type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
@@ -86,6 +97,33 @@
 
     <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const toggles = document.querySelectorAll(".toggle-password");
+
+            toggles.forEach(toggle => {
+                toggle.addEventListener("click", function () {
+
+                    const targetId = this.getAttribute("data-target");
+                    const input = document.getElementById(targetId);
+                    const icon = this.querySelector("i");
+
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.classList.remove("ti-eye");
+                        icon.classList.add("ti-eye-off");
+                    } else {
+                        input.type = "password";
+                        icon.classList.remove("ti-eye-off");
+                        icon.classList.add("ti-eye");
+                    }
+
+                });
+            });
+
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {

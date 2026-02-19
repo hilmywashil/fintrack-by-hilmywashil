@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdminUserController extends Controller
 {
@@ -60,9 +61,14 @@ class AdminUserController extends Controller
         $user->is_suspended = !$user->is_suspended;
         $user->save();
 
+        if ($user->is_suspended) {
+            DB::table('sessions')
+                ->where('user_id', $user->id)
+                ->delete();
+        }
+
         return back()->with('success', 'User status updated successfully.');
     }
-
     public function destroy(User $user)
     {
         if (auth()->id() == $user->id) {

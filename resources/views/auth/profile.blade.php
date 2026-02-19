@@ -99,8 +99,9 @@
                             <div class="mb-4">
                                 <label class="form-label">Email</label>
                                 <input type="email" name="email" class="form-control" value="{{ auth()->user()->email }}"
-                                    required>
+                                    id="disabledTextInput" for="disabledTextInput" disabled>
                             </div>
+
 
                             <hr class="my-2">
 

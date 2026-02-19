@@ -91,7 +91,6 @@ class DashboardController extends Controller
     public function chartData(Request $request)
     {
         $userId = auth()->id();
-
         $period = $request->period;
 
         if ($period == 'month') {

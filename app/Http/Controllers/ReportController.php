@@ -14,21 +14,25 @@ class ReportController extends Controller
         $month = $request->month ?? Carbon::now()->format('Y-m');
 
         $start = Carbon::parse($month)->startOfMonth();
-        $end   = Carbon::parse($month)->endOfMonth();
+        $end = Carbon::parse($month)->endOfMonth();
+
+        $userId = auth()->id();
 
         $totals = Transaction::select(
-                'type',
-                DB::raw('SUM(amount) as total')
-            )
+            'type',
+            DB::raw('SUM(amount) as total')
+        )
+            ->where('user_id', $userId)
             ->whereBetween('date', [$start, $end])
             ->groupBy('type')
             ->pluck('total', 'type');
 
-        $totalIncome  = $totals['income'] ?? 0;
+        $totalIncome = $totals['income'] ?? 0;
         $totalExpense = $totals['expense'] ?? 0;
-        $balance      = $totalIncome - $totalExpense;
+        $balance = $totalIncome - $totalExpense;
 
-        $transactions = Transaction::whereBetween('date', [$start, $end])
+        $transactions = Transaction::where('user_id', $userId) 
+            ->whereBetween('date', [$start, $end])
             ->orderBy('date', 'desc')
             ->get();
 

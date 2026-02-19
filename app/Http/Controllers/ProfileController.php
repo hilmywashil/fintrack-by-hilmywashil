@@ -15,14 +15,14 @@ class ProfileController extends Controller
 
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email',
             'current_password' => 'nullable|required_with:password|string',
             'password' => 'nullable|min:6|confirmed',
             'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
         $user->name = $data['name'];
-        $user->email = $data['email'];
+
+        $request->request->remove('email');
 
         if ($request->hasFile('photo')) {
             if ($user->photo) {

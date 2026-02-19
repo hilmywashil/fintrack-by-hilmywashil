@@ -201,3 +201,5 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::delete('/feedback/{id}', [AdminFeedbackController::class, 'destroy'])->name('feedback.destroy');
 
 });
+
+Route::view('/email-preview', 'emails.otp');

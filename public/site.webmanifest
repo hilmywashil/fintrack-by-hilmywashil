@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "FinTrack - Personal Finance Tracker",
+    "short_name": "FinTrack",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
