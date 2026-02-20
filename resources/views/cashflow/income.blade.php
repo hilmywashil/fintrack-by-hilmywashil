@@ -73,7 +73,6 @@
             </div>
         </div>
 
-        {{-- TABEL DATA PEMASUKAN --}}
         <div class="card">
             <div class="card-body">
 
